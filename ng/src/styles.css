@@ -1,0 +1,30 @@
+
+body { margin: 0; padding: 0; background-color: #222; color: #ddd; }
+
+.root-container { display: block; position: relative; height: 100vh; max-height: 100vh; max-width: 100vw; }
+
+.board_viewport { position: relative; top: 0; left: 0; z-index: 1; overflow: hidden; width: 100%; height: 100%; }
+
+.grid_container { position: relative; }
+
+.grid_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.grid_overlay_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.grid_cursor_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.grid_cursor_outer { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(0,0,0,0); }   /* This outer transparent border was necessary to remove border artifacts in chromium on windows */
+.grid_cursor_inner { position: fixed; width: 30px; height: 30px; border: 1px solid rgba(240,240,60,0.6); }
+
+.ui_layer { position: relative; top: 0; left: 0; z-index: 100; }
+
+.right_top_menu { position: fixed; right: 0px; top: 0; z-index: 110; }
+
+.right_bottom_menu { position: fixed; right: 0px; bottom: 0px; z-index: 120; }
+
+/* Tile Effects */
+.faded { opacity: 0.5; }
+.rotate90  { transform: rotate(90deg); }
+.rotate180 { transform: rotate(180deg); }
+.rotate270 { transform: rotate(270deg); }
+

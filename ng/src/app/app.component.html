@@ -1,0 +1,55 @@
+
+<div class="root-container">
+
+  <!-- GRID LAYERS - Render the Game Board -->
+
+  <div class="board_viewport">
+
+    <div class="grid_container" [ngStyle]="{ 'width': (mapL * -1 + mapR) * 32 + 'px', 'height': (mapT * -1 + mapB) * 32 + 'px' }">
+
+      <div class="grid_layer">
+        <ng-container *ngFor="let module of displayModules">
+          <img [src]="'/assets/img/'+ moduleLookup[module.type].image_urls[module.imgVariant] +'.png'"
+               [ngStyle]="{ 'left': ((0 - mapL) * 32 + (module.left * 32))+'px', 'top': ((0 - mapT) * 32 + (module.top * 32))+'px' }"
+               [ngClass]="{ 'faded': !module.isBuilt, 'rotate90': 2 == module.rotation, 'rotate180': 3 == module.rotation, 'rotate270': 4 == module.rotation }">
+        </ng-container>
+      </div>
+
+      <div class="grid_overlay_layer">
+      </div>
+
+      <div class="grid_cursor_layer">
+        <div *ngIf="cursor.isShown" class="grid_cursor_outer" [ngStyle]="{ 'left': ((cursor.left - mapL) * 32 - 1)+'px', 'top': ((cursor.top - mapT) * 32 - 1)+'px' }">
+          <div class="grid_cursor_inner"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- UI LAYERS - Render Menus and Buttons -->
+
+  <div class="ui_layer">
+
+    <div class="right_top_menu">
+      <div>Day {{ gameValues.day }}</div>
+      <div>Level {{ currentLevel }}</div>
+      <div>Union Credits {{ gameValues.union_creds }}</div>
+      <div>Trade Credits {{ gameValues.trade_creds }}</div>
+      <div>Power {{ gameValues.power_used }} Used / {{ gameValues.power_total }} Total</div>
+      <div>Compute {{ gameValues.compute_used }} Used / {{ gameValues.compute_total }} Total</div>
+      <div>Life Support {{ gameValues.life_support_used }} Used / {{ gameValues.life_support_total }} Total</div>
+      <div>Habs {{ gameValues.hab_all_total - gameValues.hab_all_avail }} Used / {{ gameValues.hab_all_total }} Total</div>
+    </div>
+
+    <div class="right_bottom_menu">
+      <div><button (click)="changeTool('')">Inspect</button><button (click)="changeTool('build')">Build</button><button (click)="changeTool('delete')">Delete</button></div>
+      <div><button (click)="advanceDay()">Next Day</button></div>
+    </div>
+
+  </div>
+
+  <!-- DIALOG LAYERS - Render interactive dialogs and pop-ups -->
+
+</div>
