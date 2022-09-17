@@ -3,14 +3,15 @@
 
   <!-- GRID LAYERS - Render the Game Board -->
 
-  <div class="board_viewport">
+  <div class="board_viewport" (click)="boardClick()">
 
     <div class="grid_container" [ngStyle]="{ 'width': (mapL * -1 + mapR) * 32 + 'px', 'height': (mapT * -1 + mapB) * 32 + 'px' }">
 
       <div class="grid_layer">
         <ng-container *ngFor="let module of displayModules">
-          <img [src]="'/assets/img/'+ moduleLookup[module.type].image_urls[module.imgVariant] +'.png'"
-               [ngStyle]="{ 'left': ((0 - mapL) * 32 + (module.left * 32))+'px', 'top': ((0 - mapT) * 32 + (module.top * 32))+'px' }"
+          <img [src]="'/assets/img/'+ moduleLookup[module.type].image_urls[module.imgVariant] +'.png'" class="board_tile"
+               title="{{ module.type +' @ '+ module.left +','+ module.top }}"
+               [ngStyle]="{ 'left': ((module.left - mapL) * 32)+'px', 'top': ((module.top - mapT) * 32)+'px' }"
                [ngClass]="{ 'faded': !module.isBuilt, 'rotate90': 2 == module.rotation, 'rotate180': 3 == module.rotation, 'rotate270': 4 == module.rotation }">
         </ng-container>
       </div>
@@ -34,7 +35,7 @@
 
     <div class="right_top_menu">
       <div>Day {{ gameValues.day }}</div>
-      <div>Level {{ currentLevel }}</div>
+      <div>Level <button (click)="levelDown()">v</button> {{ currentLevel }} <button (click)="levelUp()">^</button></div>
       <div>Union Credits {{ gameValues.union_creds }}</div>
       <div>Trade Credits {{ gameValues.trade_creds }}</div>
       <div>Power {{ gameValues.power_used }} Used / {{ gameValues.power_total }} Total</div>

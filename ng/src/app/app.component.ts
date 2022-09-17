@@ -25,11 +25,13 @@ export class AppComponent implements OnInit {
   tileLookup: TileLookup = {};                 // Fast look-up for mouse position over tile
   gameValues: GameValues = new GameValues();   // Stores game state values, including storage numbers
   selectedTool: string = '';                   // The currently selected 'paint' tool
+  currentRotation: number = 1;                 // The rotation of the current tool
+  selectedModule: number = -1;                 // The module currently selected to interact with
   buildQueue: Array<number> = [];              // Current order of building defined by user using Build tool
-  mapT: number = -30;
-  mapL: number = -30;
-  mapB: number =  30;
-  mapR: number =  30;
+  mapT: number = -20;
+  mapL: number = -20;
+  mapB: number =  20;
+  mapR: number =  20;
 
   constructor(
     private http: HttpClient
@@ -37,7 +39,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.LoadModules();
-    this.LoadMap();
   }
 
 
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit {
         this.moduleList.forEach(mod => this.moduleLookup[mod.name] = mod);
         this.areModulesLoaded = true;
         this.CheckLoadComplete();
+        this.LoadMap();   // Loading the map relies upon the module definitions being loaded first!
       },
       error: (err) => { console.log('LoadModules(): error: ',err) },
       complete: () => { console.log('LoadModules(): complete') }
@@ -61,12 +63,12 @@ export class AppComponent implements OnInit {
   LoadMap() {
     // Corridors (in a + shape)
     this.addModule('passage_corridor',  0,  0, 0, 1, true);
-    this.addModule('passage_corridor',  0, -2, 0, 1, true);
     this.addModule('passage_corridor',  0, -1, 0, 1, true);
+    this.addModule('passage_corridor',  0, -2, 0, 1, true);
     this.addModule('passage_corridor',  0,  1, 0, 1, true);
     this.addModule('passage_corridor',  0,  2, 0, 1, true);
-    this.addModule('passage_corridor', -2,  0, 0, 1, true);
     this.addModule('passage_corridor', -1,  0, 0, 1, true);
+    this.addModule('passage_corridor', -2,  0, 0, 1, true);
     this.addModule('passage_corridor',  1,  0, 0, 1, true);
     this.addModule('passage_corridor',  2,  0, 0, 1, true);
     // Modules
@@ -91,6 +93,7 @@ export class AppComponent implements OnInit {
     this.addModule('phasor_light',         0, 0, 0, 3, true);
 
     this.RefreshUIFromBoard();
+    this.SetDisplayLevel();
 
     // Set initial game values:
     this.gameValues.day = 1;
@@ -142,6 +145,21 @@ export class AppComponent implements OnInit {
     gv.life_support_used = gv.staff_total * 0.03;
   }
 
+  SetDisplayLevel() {   // Filters down to only the modules to be displayed on the current level
+    this.displayModules = this.boardModules.filter(mod => mod.level == this.currentLevel);
+    this.tileLookup = {};   // Reset and rebuild the tile lookup
+    this.displayModules.forEach(mod => {
+      const def = this.moduleLookup[mod.type];
+      const desW = (def.width == def.height) ? def.width : (mod.rotation % 2) ? def.width : def.height;
+      const desH = (def.width == def.height) ? def.width : (mod.rotation % 2) ? def.height : def.width;
+      for(let x=0; x<desW; x++) {
+        for(let y=0; y<desH; y++) {
+          this.tileLookup[(mod.top + x) +','+ (mod.left + y)] = mod.id;
+        }
+      }
+    });
+  }
+
 
 
   // KEYBOARD EVENTS
@@ -149,6 +167,9 @@ export class AppComponent implements OnInit {
   handleKeyboardEvent(event: KeyboardEvent) {
     // Useful event props: { altKey: false, charCode: 0, key: "ArrowUp", ctrlKey: false, keyCode: 38, metaKey: false, repeat: true, shiftKey: false, type: "keydown", code: "ArrowUp" }
     console.log(event);
+    if (!['','delete','build'].includes(this.selectedTool) && event.code === 'KeyR') {
+      this.currentRotation = (this.currentRotation > 3) ? 1 : this.currentRotation++;
+    }
   }
 
   // MOUSE EVENTS
@@ -159,7 +180,7 @@ export class AppComponent implements OnInit {
     const blockX = Math.floor(e.pageX / 32) + this.mapL;
     const blockY = Math.floor(e.pageY / 32) + this.mapT;
     if (this.cursor.left != blockX || this.cursor.top != blockY) {
-      console.log("Cursor block changed to",blockX,",",blockY);
+      // console.log("Cursor block changed to",blockX,",",blockY);
       this.cursor = { left: blockX, top: blockY, isShown: (blockX<=this.mapR && blockY<=this.mapB) ? true : false };
     }
   }
@@ -177,14 +198,84 @@ export class AppComponent implements OnInit {
   }
 
   boardClick() {
+    if (!this.selectedTool) this.selectModule(this.cursor.left, this.cursor.top);
+    if ('delete' == this.selectedTool) this.delModule(this.cursor.left, this.cursor.top);
+    if ('build' == this.selectedTool) this.queueBuild(this.cursor.left, this.cursor.top);
   }
 
   addModule(type: string, left: number, top: number, level: number, rotation: number, isBuilt = false): boolean {
+    const def = this.moduleLookup[type];
+    console.log('addModule() called: type =',type,', definition:',def);
+    if (!def) { console.log('addModule(): type',type,'not found!'); return false; }
+
+    // === First determine if this module can be placed where requested
+
+    // Check the tile lookup for free spaces
+    const desW = (def.width == def.height) ? def.width : (rotation % 2) ? def.width : def.height;
+    const desH = (def.width == def.height) ? def.width : (rotation % 2) ? def.height : def.width;
+    for(let x=0; x<desW; x++) {
+      for(let y=0; y<desH; y++) {
+        if (Object.keys(this.tileLookup).includes((top + x) +','+ (left + y))) return false;
+      }
+    }
+
+    // Check for valid connections to other structures
+
+    // === Place the module and set any connections
+    const id = this.boardModules.length;
+    this.boardModules.push({
+      'id': id,
+      'type': type,
+      'left': left,
+      'top': top,
+      'level': level,
+      'isBuilt': isBuilt,
+      'isActive': false,
+      'rotation': rotation,
+      'imgVariant': 0,
+      'traversalConnections': []
+    });
+
+    // === Update the tile look-up with the locations this module filled
+    for(let x=0; x<desW; x++) {
+      for(let y=0; y<desH; y++) {
+        this.tileLookup[(top + x) +','+ (left + y)] = id;
+      }
+    }
 
     return true;
   }
 
-  delModule() {
+  // Select a module on the board to interact with
+  selectModule(locX: number, locY: number): boolean {
+    const key = locX+','+locY;
+    if (Object.keys(this.tileLookup).includes(key)) {
+      this.selectedModule = this.tileLookup[key];
+      return true;
+    }
+    return false;
+  }
+
+  // Delete a module from the game board
+  delModule(locX: number, locY: number): boolean {
+    return true;
+  }
+
+  // Add a module to the construction queue
+  queueBuild(locX: number, locY: number): boolean {
+    return true;
+  }
+
+  // Change the level in view to one level higher
+  levelUp() {
+    this.currentLevel++;
+    this.SetDisplayLevel();
+  }
+
+  // Change the level in view to one level lower
+  levelDown() {
+    this.currentLevel--;
+    this.SetDisplayLevel();
   }
 
   advanceDay() {

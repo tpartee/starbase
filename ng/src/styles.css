@@ -5,13 +5,13 @@ body { margin: 0; padding: 0; background-color: #222; color: #ddd; }
 
 .board_viewport { position: relative; top: 0; left: 0; z-index: 1; overflow: hidden; width: 100%; height: 100%; }
 
-.grid_container { position: relative; }
+.grid_container { position: relative; background-image: url(/assets/img/kai-pilger-Ef6iL87-vOA-unsplash.jpg); }
 
 .grid_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
 .grid_overlay_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
 .grid_cursor_layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.board_tile { position: fixed; }
 
 .grid_cursor_outer { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(0,0,0,0); }   /* This outer transparent border was necessary to remove border artifacts in chromium on windows */
 .grid_cursor_inner { position: fixed; width: 30px; height: 30px; border: 1px solid rgba(240,240,60,0.6); }
