@@ -30,40 +30,43 @@ export class GameValues {
   staff_worker_avail: number = 0;
   storage_total: number = 0;
   storage_used: number = 0;
-  stores: IStores = {
-    mat_basic: 0,
-    mat_inter: 0,
-    mat_adv: 0,
-    mat_rare: 0,
-    mat_synth: 0,
-    mat_exotic: 0,
-    mat_crystal: 0,
-    mat_waste: 0,
-    mat_bio: 0,
-    mat_biowaste: 0,
-    comp_structure: 0,
-    comp_basic: 0,
-    comp_inter: 0,
-    comp_adv: 0
-  };
+  stores: Stores = new Stores;
 
   constructor() {}
 
 }
 
-export interface IStores {
-  comp_structure: number;
-  comp_basic: number;
-  comp_inter: number;
-  comp_adv: number;
-  mat_basic: number;
-  mat_inter: number;
-  mat_adv: number;
-  mat_rare: number;
-  mat_synth: number;
-  mat_exotic: number;
-  mat_crystal: number;
-  mat_bio: number;
-  mat_waste: number;
-  mat_biowaste: number;
+export class Stores {
+  public comp_structure: number = 0;
+  public comp_basic: number = 0;
+  public comp_inter: number = 0;
+  public comp_adv: number = 0;
+  public mat_basic: number = 0;
+  public mat_inter: number = 0;
+  public mat_adv: number = 0;
+  public mat_rare: number = 0;
+  public mat_synth: number = 0;
+  public mat_exotic: number = 0;
+  public mat_crystal: number = 0;
+  public mat_bio: number = 0;
+  public mat_waste: number = 0;
+  public mat_biowaste: number = 0;
+
+  public totalUsed(): number {
+    return Math.ceil( this.comp_structure )
+         + Math.ceil( this.comp_adv )
+         + Math.ceil( this.comp_basic )
+         + Math.ceil( this.comp_inter )
+         + Math.ceil( this.comp_adv )
+         + Math.ceil( this.mat_basic )
+         + Math.ceil( this.mat_inter )
+         + Math.ceil( this.mat_adv )
+         + Math.ceil( this.mat_rare )
+         + Math.ceil( this.mat_synth )
+         + Math.ceil( this.mat_exotic )
+         + Math.ceil( this.mat_crystal )
+         + Math.ceil( this.mat_bio )
+         + Math.ceil( this.mat_waste )
+         + Math.ceil( this.mat_biowaste );
+  }
 }

@@ -11,7 +11,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "any" ],
     "construction": {},
     "consumers": { "power": 0.2 },
     "producers": { "hab_cramped": 12 }
@@ -45,7 +45,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "mat_crystal": 0.005, "compute": 1 },
     "producers": { "power": 15 }
@@ -62,7 +62,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "power": 1 },
     "producers": { "compute": 8 }
@@ -79,7 +79,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "any" ],
     "construction": {},
     "consumers": { "power": 0.1 },
     "producers": { "storage": 300 }
@@ -96,7 +96,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "power-standby": 0.1, "power-active": 0.3, "compute": 0.5, "mat_basic": 2, "mat_inter": 1, "staff_engineer": 1 },
     "producers": { "comp_structure": 3 }
@@ -113,7 +113,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "power-standby": 0.1, "power-active": 0.3, "compute": 0.5, "mat_basic": 2, "mat_inter": 1, "staff_engineer": 1 },
     "producers": { "comp_basic": 2, "mat_waste": 1 }
@@ -130,14 +130,14 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "mat_biowaste": 0.5, "power": 0.5, "compute": 0.5 },
     "producers": { "mat_bio": 0.25, "mat_waste": 0.25 }
   },
   {
     "name": "airlock_tiny",
-    "display": "",
+    "display": "Tiny Airlock",
     "desc": "",
     "width": 1,
     "height": 1,
@@ -147,14 +147,14 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
-    "consumers": { "power": 0.2 },
+    "consumers": { "power": 0.2, "staff_engineer_min": 1, "staff_engineer_max": 2 },
     "producers": { "eva_suit": 2 }
   },
   {
     "name": "life_support_tiny",
-    "display": "",
+    "display": "Portable Life Support",
     "desc": "",
     "width": 1,
     "height": 1,
@@ -164,7 +164,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": { "power": 0.25, "compute": 0.25 },
     "producers": { "life_support": 1 }
@@ -181,7 +181,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -198,7 +198,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "any" ],
     "construction": {},
     "consumers": { "power-standby": 0.1, "power-active": 0.2 },
     "producers": { "rest": 0.25, "social": 0.25, "capacity": 18 }
@@ -269,7 +269,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all" ],
+    "connections": [ "all", "lift" ],
     "construction": { "comp_structure": 2, "comp_basic": 1, "days": 1 },
     "consumers": { "power-standby": 0.1, "power-active": 0.2 },
     "producers": {}
@@ -286,11 +286,14 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all" ],
+    "connections": [ "all", "lift" ],
     "construction": { "comp_structure": 10, "comp_basic": 3, "days": 4 },
     "consumers": { "power-standby": 0.2, "power-active": 0.6 },
     "producers": {}
   },
+
+
+
   {
     "name": "airlock",
     "display": "Airlock",
@@ -303,7 +306,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 2, "comp_basic": 1, "days": 1, "edge-clearance": "1x1x1" },
     "consumers": { "power-standby": 0.1, "power-active": 0.2 },
     "producers": { "eva_suit": 4 }
@@ -371,7 +374,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 3, "comp_basic": 2, "days": 2, "edge-clearance": "7x3x3" },
     "consumers": { "power-standby": 0, "power-active": 0.1 },
     "producers": {}
@@ -388,7 +391,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": { "comp_structure": 10, "comp_basic": 6, "days": 5, "edge-clearance": "15x6x5" },
     "consumers": { "power-standby": 0.1, "power-active": 0.2 },
     "producers": {}
@@ -405,7 +408,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": { "comp_structure": 30, "comp_basic": 20, "comp_inter": 10, "days": 20, "edge-clearance": "21x9x7" },
     "consumers": { "power-standby": 0.2, "power-active": 0.5 },
     "producers": {}
@@ -422,7 +425,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 15, "comp_basic": 10, "comp_inter": 5, "days": 10, "vertical-clearance": "1" },
     "consumers": { "power-standby": 0.5, "power-active": 2 },
     "producers": {}
@@ -439,7 +442,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 30, "comp_basic": 20, "comp_inter": 10, "days": 20, "vertical-clearance": "2" },
     "consumers": { "power-standby": 1, "power-active": 5 },
     "producers": {}
@@ -456,7 +459,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 45, "comp_basic": 30, "comp_inter": 15, "days": 30, "vertical-clearance": "3" },
     "consumers": { "power-standby": 1.5, "power-active": 10 },
     "producers": {}
@@ -473,7 +476,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 5, "comp_basic": 5, "comp_inter": 5, "days": 3 },
     "consumers": { "mat_crystal": 0.01, "compute": 2 },
     "producers": { "power": 25 }
@@ -490,7 +493,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 15, "comp_basic": 20, "comp_inter": 20, "days": 7 },
     "consumers": { "mat_crystal": 0.05, "compute": 5 },
     "producers": { "power": 120 }
@@ -507,7 +510,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 40, "comp_basic": 30, "comp_inter": 40, "days": 15 },
     "consumers": { "mat_crystal": 0.1, "compute": 10 },
     "producers": { "power": 250 }
@@ -524,7 +527,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 12, "comp_basic": 15, "comp_inter": 10, "days": 10 },
     "consumers": { "mat_basic": 0.5, "compute": 1, "power-bootstrap": 50 },
     "producers": { "mat_inter": 0.1, "power": 50 }
@@ -541,7 +544,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 20, "comp_basic": 25, "comp_inter": 20, "days": 20 },
     "consumers": { "mat_basic": 1, "compute": 2, "power-bootstrap": 80 },
     "producers": { "mat_inter": 0.2, "power": 90 }
@@ -558,7 +561,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all", "engineering_station" ],
+    "connections": [ "engineering_station" ],
     "construction": { "comp_structure": 35, "comp_basic": 40, "comp_inter": 30, "days": 30 },
     "consumers": { "mat_basic": 1.5, "compute": 4, "power-bootstrap": 120 },
     "producers": { "mat_inter": 0.3, "power": 160 }
@@ -660,7 +663,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all" ],
+    "connections": [ "bottom-any" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -677,7 +680,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "all-center" ],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -694,7 +697,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 4, "comp_basic": 2, "days": 2 },
     "consumers": { "power-standby": 0.2, "power-active": 0.3, "staff_security_min": 1, "staff_security_max": 4 },
     "producers": {}
@@ -711,7 +714,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 3, "comp_basic": 2, "comp_inter": 2, "days": 3 },
     "consumers": { "power-standby": 0.2, "power-active": 0.4, "staff_engineer": 1, "compute": 1 },
     "producers": {}
@@ -745,7 +748,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 6, "comp_basic": 3, "days": 3 },
     "consumers": { "power-standby": 0.3, "power-active": 1, "compute": 1, "mat_basic": 2, "mat_inter": 1, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 3 },
     "producers": { "comp_structure": 3 }
@@ -762,7 +765,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 15, "comp_basic": 8, "days": 7 },
     "consumers": { "power-standby": 0.5, "power-active": 2, "compute": 2, "mat_basic": 2, "mat_inter": 1, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 6 },
     "producers": { "comp_structure": 3 }
@@ -779,7 +782,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 6, "comp_basic": 3, "days": 3 },
     "consumers": { "power-standby": 0.3, "power-active": 1, "compute": 1, "mat_basic": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 3 },
     "producers": { "comp_basic": 2 }
@@ -796,7 +799,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 15, "comp_basic": 8, "days": 7 },
     "consumers": { "power-standby": 0.5, "power-active": 2, "compute": 2, "mat_basic": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 6 },
     "producers": { "comp_basic": 2 }
@@ -813,7 +816,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 6, "comp_basic": 5, "days": 5 },
     "consumers": { "power-standby": 0.3, "power-active": 2, "compute": 2, "mat_basic": 2, "mat_inter": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 3 },
     "producers": { "comp_inter": 2 }
@@ -830,7 +833,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 15, "comp_basic": 10, "days": 10 },
     "consumers": { "power-standby": 0.5, "power-active": 4, "compute": 4, "mat_basic": 2, "mat_inter": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 6 },
     "producers": { "comp_inter": 2 }
@@ -847,7 +850,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 8, "comp_basic": 5, "comp_inter": 10, "days": 8 },
     "consumers": { "power-standby": 0.5, "power-active": 3, "compute": 4, "mat_basic": 1, "mat_inter": 1, "mat_adv": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 2 },
     "producers": { "comp_adv": 2 }
@@ -864,7 +867,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 20, "comp_basic": 10, "days": 16 },
     "consumers": { "power-standby": 1, "power-active": 6, "compute": 8, "mat_basic": 1, "mat_inter": 1, "mat_adv": 3, "staff_engineer": 1, "staff_worker_min": 1, "staff_worker_max": 4 },
     "producers": { "comp_adv": 2 }
@@ -881,7 +884,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends" ],
+    "connections": [ "vertical" ],
     "construction": { "comp_structure": 5, "comp_basic": 2, "comp_inter": 1, "days": 2 },
     "consumers": { "power-standby": 0.2, "power-active": 0.4, "compute": 0.2 },
     "producers": { "hab_basic": 6 }
@@ -898,7 +901,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends" ],
+    "connections": [ "vertical" ],
     "construction": { "comp_structure": 8, "comp_basic": 4, "comp_inter": 3, "days": 3 },
     "consumers": { "power-standby": 0.3, "power-active": 0.7, "compute": 0.5 },
     "producers": { "hab_basic": 10 }
@@ -915,7 +918,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends" ],
+    "connections": [ "vertical" ],
     "construction": { "comp_structure": 12, "comp_basic": 6, "comp_inter": 5, "days": 4 },
     "consumers": { "power-standby": 0.4, "power-active": 1, "compute": 0.7 },
     "producers": { "hab_basic": 14 }
@@ -932,7 +935,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends-center" ],
+    "connections": [ "vertical-center" ],
     "construction": { "comp_structure": 15, "comp_basic": 8, "comp_inter": 5, "days": 7 },
     "consumers": { "power-standby": 0.7, "power-active": 1.5, "compute": 0.5, "mat_basic": 0.1, "mat_bio": 0.1 },
     "producers": { "hab_luxury": 6 }
@@ -949,7 +952,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends" ],
+    "connections": [ "vertical-center" ],
     "construction": { "comp_structure": 18, "comp_basic": 15, "comp_inter": 10, "days": 12 },
     "consumers": { "power-standby": 1, "power-active": 2, "compute": 1 },
     "producers": { "hab_luxury": 10 }
@@ -966,7 +969,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "vertical-ends" ],
+    "connections": [ "vertical-center" ],
     "construction": { "comp_structure": 35, "comp_basic": 22, "comp_inter": 15, "days": 18 },
     "consumers": { "power-standby": 1.5, "power-active": 3, "compute": 1.5 },
     "producers": { "hab_luxury": 14 }
@@ -1017,7 +1020,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": { "comp_structure": 30, "comp_basic": 6, "comp_inter": 2, "days": 10 },
     "consumers": { "power-standby": 1, "power-active": 1.5 },
     "producers": { "rest": 1, "capacity": 96 }
@@ -1051,7 +1054,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 21, "comp_basic": 7, "comp_inter": 2, "days": 10 },
     "consumers": { "power-standby": 0.8, "power-active": 1.5 },
     "producers": { "rest": 2, "social": 0.5, "capacity": 18 }
@@ -1085,7 +1088,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 15, "comp_basic": 8, "comp_inter": 5, "days": 7 },
     "consumers": { "power-standby": 0.5, "power-active": 1 },
     "producers": { "rest": 1, "social": 1, "entertainment": 0.5, "beauty": 0.5, "capacity": 24 }
@@ -1102,7 +1105,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 5, "comp_basic": 3, "days": 1.5 },
     "consumers": { "power-standby": 0.2, "power-active": 0.3 },
     "producers": { "capacity": 15 }
@@ -1119,7 +1122,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 10, "comp_basic": 6, "days": 3 },
     "consumers": { "power-standby": 0.4, "power-active": 0.5 },
     "producers": { "capacity": 32 }
@@ -1136,7 +1139,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": { "comp_structure": 15, "comp_basic": 10, "days": 5 },
     "consumers": { "power-standby": 0.6, "power-active": 0.8 },
     "producers": { "capacity": 50 }
@@ -1153,7 +1156,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": { "comp_structure": 25, "comp_basic": 20, "comp_inter": 30, "comp_adv": 10, "days": 20 },
     "consumers": { "power-standby": 1, "power-active": 4, "compute": 15, "staff_worker": 12 },
     "producers": {  }
@@ -1170,7 +1173,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "any-darkside" ],
+    "connections": [ "darkside" ],
     "construction": { "comp_structure": 3, "comp_basic": 2, "mat_bio": 3, "days": 1.5 },
     "consumers": { "power-standby": 0.1, "power-active": 0.2, "mat_basic": 0.1 },
     "producers": { "mat_bio": 0.05, "life_support": 0.05, "rest": 0.1, "beauty": 0.25, "science": 0.1 }
@@ -1187,7 +1190,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "any-darkside" ],
+    "connections": [ "darkside" ],
     "construction": { "comp_structure": 12, "comp_basic": 10, "mat_bio": 15, "days": 5 },
     "consumers": { "power-standby": 0.4, "power-active": 0.5, "mat_basic": 0.5 },
     "producers": { "mat_bio": 0.3, "life_support": 0.3, "rest": 0.2, "beauty": 0.5, "science": 0.2 }
@@ -1204,7 +1207,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "any-darkside" ],
+    "connections": [ "darkside" ],
     "construction": { "comp_structure": 25, "comp_basic": 25, "mat_bio": 35, "days": 10 },
     "consumers": { "power-standby": 1, "power-active": 1.2, "mat_basic": 1 },
     "producers": { "mat_bio": 0.7, "life_support": 0.7, "rest": 0.3, "beauty": 0.75, "science": 0.5 }
@@ -1221,7 +1224,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "center-darkside" ],
+    "connections": [ "darkside-center" ],
     "construction": { "comp_structure": 18, "comp_basic": 15, "mat_bio": 25, "days": 8 },
     "consumers": { "power-standby": 0.6, "power-active": 0.8, "mat_basic": 0.7 },
     "producers": { "mat_bio": 0.5, "life_support": 0.5, "rest": 0.25, "beauty": 0.6, "science": 0.3 }
@@ -1238,7 +1241,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "center-darkside" ],
+    "connections": [ "darkside-center" ],
     "construction": { "comp_structure": 45, "comp_basic": 30, "mat_bio": 60, "days": 20 },
     "consumers": { "power-standby": 1.5, "power-active": 2, "mat_basic": 2 },
     "producers": { "mat_bio": 1.2, "life_support": 1.2, "rest": 0.5, "beauty": 1, "science": 0.5 }
@@ -1306,7 +1309,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 4, "comp_basic": 2, "comp_inter": 1, "days": 1.5 },
     "consumers": { "power": 0.5, "compute": 0.5 },
     "producers": { "life_support": 1 }
@@ -1323,7 +1326,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": { "comp_structure": 9, "comp_basic": 5, "comp_inter": 3, "days": 3 },
     "consumers": { "power": 1, "compute": 1 },
     "producers": { "life_support": 2 }
@@ -1340,7 +1343,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1357,7 +1360,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1374,7 +1377,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1408,7 +1411,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1425,7 +1428,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1442,7 +1445,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-center" ],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1459,7 +1462,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1476,7 +1479,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1493,7 +1496,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1510,7 +1513,7 @@
     "doorway": false,
     "exterior": true,
     "image_urls": [ "blank" ],
-    "connections": [],
+    "connections": [ "bottom-center" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1527,7 +1530,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1544,7 +1547,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1561,7 +1564,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side-any" ],
+    "connections": [ "bottom-any" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1578,7 +1581,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1595,7 +1598,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1612,7 +1615,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": { "prisoners": 7 }
@@ -1629,7 +1632,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": { "prisoners": 15 }
@@ -1646,7 +1649,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": { "prisoners": 23 }
@@ -1663,7 +1666,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "bottom-side" ],
+    "connections": [ "bottom" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1680,7 +1683,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "engineering_station", "any" ],
+    "connections": [ "engineering_station" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1697,7 +1700,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "engineering_station", "any" ],
+    "connections": [ "engineering_station" ],
     "construction": {},
     "consumers": {},
     "producers": {}
@@ -1714,7 +1717,7 @@
     "doorway": false,
     "exterior": false,
     "image_urls": [ "blank" ],
-    "connections": [ "engineering_station", "any" ],
+    "connections": [ "engineering_station" ],
     "construction": {},
     "consumers": {},
     "producers": {}
