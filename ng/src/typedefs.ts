@@ -7,14 +7,25 @@ export interface IBoardModule {
   top: number;
   level: number;
   isBuilt: boolean;
+  buildDaysLeft: number;
   rotation: number;
   imgVariant: number;
   isActive: boolean;
+  assigned_command: number;
+  assigned_security: number;
+  assigned_engineer: number;
+  assigned_medic: number;
+  assigned_worker: number;
   traversalConnections: Array<number>;
+  neighbors: Array<number>;
 }
 
 export type TileLookup = {
   [index: string]: number;
+}
+
+export type TraversalLookup = {
+  [index: string]: Array<string>;
 }
 
 // Represents the base definition of each module
@@ -79,6 +90,19 @@ export interface IConsumers {
   mat_bio?: number;
   mat_waste?: number;
   mat_biowaste?: number;
+
+  staff_engineer?: number;
+  staff_engineer_min?: number;
+  staff_engineer_max?: number;
+  staff_medic?: number;
+  staff_medic_min?: number;
+  staff_medic_max?: number;
+  staff_security?: number;
+  staff_security_min?: number;
+  staff_security_max?: number;
+  staff_worker?: number;
+  staff_worker_min?: number;
+  staff_worker_max?: number;
 }
 
 // Represents various production values for modules
@@ -90,6 +114,7 @@ export interface IProducers {
   hab_luxury?: number;
   prisoners?: number;
   life_support?: number;
+  storage?: number;
 
   comp_structure?: number;
   comp_basic?: number;

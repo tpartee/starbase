@@ -3,7 +3,7 @@ body { margin: 0; padding: 0; background-color: #222; color: #ddd; }
 
 .root-container { display: block; position: relative; height: 100vh; max-height: 100vh; max-width: 100vw; }
 
-.board_viewport { position: relative; top: 0; left: 0; z-index: 1; overflow: hidden; width: 100%; height: 100%; }
+.board_viewport { position: relative; top: 0; left: 20vw; z-index: 1; overflow: hidden; width: 60vw; height: 100%; box-sizing: border-box; border: 1px solid rgba(128,240,128,0.5); }
 
 .grid_container { position: relative; background-image: url(/assets/img/kai-pilger-Ef6iL87-vOA-unsplash.jpg); }
 
@@ -13,14 +13,18 @@ body { margin: 0; padding: 0; background-color: #222; color: #ddd; }
 
 .board_tile { position: fixed; }
 
-.grid_cursor_outer { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(0,0,0,0); }   /* This outer transparent border was necessary to remove border artifacts in chromium on windows */
-.grid_cursor_inner { position: fixed; width: 30px; height: 30px; border: 1px solid rgba(240,240,60,0.6); }
+.grid_cursor_outer { position: fixed; width: 34px; height: 34px; box-sizing: border-box; border: 1px solid rgba(0,0,0,0); }   /* This outer transparent border was necessary to remove border artifacts in chromium on windows */
+.grid_cursor_inner { position: fixed; width: 32px; height: 32px; box-sizing: border-box; border: 1px solid rgba(240,240,60,0.6); }
 
 .ui_layer { position: relative; top: 0; left: 0; z-index: 100; }
 
-.right_top_menu { position: fixed; right: 0px; top: 0; z-index: 110; }
+.left_bottom_menu { position: fixed; left: 0; bottom: 0; padding: 8px; z-index: 105; width: 20vw; box-sizing: border-box; }
 
-.right_bottom_menu { position: fixed; right: 0px; bottom: 0px; z-index: 120; }
+.right_top_menu { position: fixed; right: 0; top: 0; padding: 8px; z-index: 110; width: 20vw; box-sizing: border-box; }
+
+.right_bottom_menu { position: fixed; right: 0; bottom: 0; padding: 8px; z-index: 120; width: 20vw; box-sizing: border-box; }
+
+.center_bottom_error { position: fixed; width: 400px; margin-left: -200px; left: 50%; bottom: 8px; z-index: 180; color: #f33; text-align: center; box-sizing: border-box; }
 
 /* Tile Effects */
 .faded { opacity: 0.5; }

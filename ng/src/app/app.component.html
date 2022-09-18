@@ -33,6 +33,17 @@
 
   <div class="ui_layer">
 
+    <div class="left_bottom_menu">
+      <div>Build Queue:</div>
+      <div style="display: table;">
+        <div *ngFor="let modId of buildQueue" style="display: table-row; width: 100%;">
+          <div style="display: table-cell; width: 80%;">{{ moduleLookup[boardModules[modId].type].display }}</div>
+          <div style="display: table-cell; width: 20%;">{{ boardModules[modId].buildDaysLeft }} days</div>
+        </div>
+        <div *ngIf="buildQueue.length < 1" style="display: table-row;">No Builds Queued</div>
+      </div>
+    </div>
+
     <div class="right_top_menu">
       <div>Day {{ gameValues.day }}</div>
       <div>Level <button (click)="levelDown()">v</button> {{ currentLevel }} <button (click)="levelUp()">^</button></div>
@@ -42,12 +53,27 @@
       <div>Compute {{ gameValues.compute_used }} Used / {{ gameValues.compute_total }} Total</div>
       <div>Life Support {{ gameValues.life_support_used }} Used / {{ gameValues.life_support_total }} Total</div>
       <div>Habs {{ gameValues.hab_all_total - gameValues.hab_all_avail }} Used / {{ gameValues.hab_all_total }} Total</div>
+      <div>Storage {{ gameValues.storage_used }} Used / {{ gameValues.storage_total }} Total</div>
+      <div>Mats: Basic&nbsp;{{ gameValues.stores.mat_basic }} Inter&nbsp;{{ gameValues.stores.mat_inter }} Adv&nbsp;{{ gameValues.stores.mat_adv }} Rare&nbsp;{{ gameValues.stores.mat_rare }} Synth&nbsp;{{ gameValues.stores.mat_synth }} Exo&nbsp;{{ gameValues.stores.mat_exotic }} Crystal&nbsp;{{ gameValues.stores.mat_crystal }} Bio&nbsp;{{ gameValues.stores.mat_bio }} Waste&nbsp;{{ gameValues.stores.mat_waste }} BioWaste&nbsp;{{ gameValues.stores.mat_biowaste }}</div>
+      <div>Comps: Struct {{ gameValues.stores.comp_structure }} Basic {{ gameValues.stores.comp_basic }} Inter {{ gameValues.stores.comp_inter }} Adv {{ gameValues.stores.comp_adv }}</div>
     </div>
 
     <div class="right_bottom_menu">
+      <div *ngIf="selectedModule > -1 && selectedModule < boardModules.length">
+        <div>Module: {{ selectedModuleDef?.display }}</div>
+        <div>Status: {{ boardModules[selectedModule].isActive ? 'Enabled' : 'Disabled / Standby' }} <button (click)="toggleModuleActive(boardModules[selectedModule])">{{ boardModules[selectedModule].isActive ? 'Disable' : 'Enable' }}</button></div>
+        <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_engineer_min">Engineers <button (click)="remStaff(selectedModule, 'engineer')">-</button> {{ boardModules[selectedModule].assigned_engineer }} <button (click)="addStaff(selectedModule, 'engineer')">+</button></div>
+        <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_security_min">Security  <button (click)="remStaff(selectedModule, 'security')">-</button> {{ boardModules[selectedModule].assigned_security }} <button (click)="addStaff(selectedModule, 'security')">+</button></div>
+        <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_medic_min">   Medics    <button (click)="remStaff(selectedModule, 'medic')"   >-</button> {{ boardModules[selectedModule].assigned_medic    }} <button (click)="addStaff(selectedModule, 'medic')"   >+</button></div>
+        <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_worker_min">  Workers   <button (click)="remStaff(selectedModule, 'worker')"  >-</button> {{ boardModules[selectedModule].assigned_worker   }} <button (click)="addStaff(selectedModule, 'worker')"  >+</button></div>
+        <div *ngIf="selectedModuleError" style="color: #f33;">{{ selectedModuleError }}</div>
+      </div>
       <div><button (click)="changeTool('')">Inspect</button><button (click)="changeTool('build')">Build</button><button (click)="changeTool('delete')">Delete</button></div>
+      <div><button (click)="changeTool('passage_corridor')">Corridor</button><button (click)="changeTool('lift_basic')">Lift</button><button (click)="changeTool('lift_quad')">QuadLift</button></div>
       <div><button (click)="advanceDay()">Next Day</button></div>
     </div>
+
+    <div *ngIf="generalError" class="center_bottom_error">{{ generalError }}</div>
 
   </div>
 
