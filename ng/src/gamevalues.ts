@@ -30,13 +30,14 @@ export class GameValues {
   staff_worker_avail: number = 0;
   storage_total: number = 0;
   storage_used: number = 0;
-  stores: Stores = new Stores;
+  stores: Stores = new Stores(null);
 
   constructor() {}
 
 }
 
 export class Stores {
+  public props: Array<string> = ['comp_structure','comp_basic','comp_inter','comp_adv','mat_basic','mat_inter','mat_adv','mat_rare','mat_synth','mat_exotic','mat_crystal','mat_bio','mat_waste','mat_biowaste'];
   public comp_structure: number = 0;
   public comp_basic: number = 0;
   public comp_inter: number = 0;
@@ -51,6 +52,99 @@ export class Stores {
   public mat_bio: number = 0;
   public mat_waste: number = 0;
   public mat_biowaste: number = 0;
+
+  constructor(oldStore: Stores | null) {
+    if (null == oldStore) return;
+    this.comp_structure = oldStore.comp_structure;
+    this.comp_basic = oldStore.comp_basic;
+    this.comp_inter = oldStore.comp_inter;
+    this.comp_adv = oldStore.comp_adv;
+    this.mat_basic = oldStore.mat_basic;
+    this.mat_inter = oldStore.mat_inter;
+    this.mat_adv = oldStore.mat_adv;
+    this.mat_rare = oldStore.mat_rare;
+    this.mat_synth = oldStore.mat_synth;
+    this.mat_exotic = oldStore.mat_exotic;
+    this.mat_crystal = oldStore.mat_crystal;
+    this.mat_bio = oldStore.mat_bio;
+    this.mat_waste = oldStore.mat_waste;
+    this.mat_biowaste = oldStore.mat_biowaste;
+  }
+
+  public getProp(propName: string): number {
+    if ('comp_structure' == propName) return this.comp_structure;
+    if ('comp_basic' == propName) return this.comp_basic;
+    if ('comp_inter' == propName) return this.comp_inter;
+    if ('comp_adv' == propName) return this.comp_adv;
+    if ('mat_basic' == propName) return this.mat_basic;
+    if ('mat_inter' == propName) return this.mat_inter;
+    if ('mat_adv' == propName) return this.mat_adv;
+    if ('mat_rare' == propName) return this.mat_rare;
+    if ('mat_synth' == propName) return this.mat_synth;
+    if ('mat_exotic' == propName) return this.mat_exotic;
+    if ('mat_crystal' == propName) return this.mat_crystal;
+    if ('mat_bio' == propName) return this.mat_bio;
+    if ('mat_waste' == propName) return this.mat_waste;
+    if ('mat_biowaste' == propName) return this.mat_biowaste;
+    return 0;
+  }
+
+  public setProp(propName: string, val: number) {
+    switch (propName) {
+      case 'comp_structure': this.comp_structure = val; return;
+      case 'comp_basic': this.comp_basic = val; return;
+      case 'comp_inter': this.comp_inter = val; return;
+      case 'comp_adv': this.comp_adv = val; return;
+      case 'mat_basic': this.mat_basic = val; return;
+      case 'mat_inter': this.mat_inter = val; return;
+      case 'mat_adv': this.mat_adv = val; return;
+      case 'mat_rare': this.mat_rare = val; return;
+      case 'mat_synth': this.mat_synth = val; return;
+      case 'mat_exotic': this.mat_exotic = val; return;
+      case 'mat_crystal': this.mat_crystal = val; return;
+      case 'mat_bio': this.mat_bio = val; return;
+      case 'mat_waste': this.mat_waste = val; return;
+      case 'mat_biowaste': this.mat_biowaste = val; return;
+    }
+  }
+
+  public addProp(propName: string, val: number) {
+    switch (propName) {
+      case 'comp_structure': this.comp_structure += val; return;
+      case 'comp_basic': this.comp_basic += val; return;
+      case 'comp_inter': this.comp_inter += val; return;
+      case 'comp_adv': this.comp_adv += val; return;
+      case 'mat_basic': this.mat_basic += val; return;
+      case 'mat_inter': this.mat_inter += val; return;
+      case 'mat_adv': this.mat_adv += val; return;
+      case 'mat_rare': this.mat_rare += val; return;
+      case 'mat_synth': this.mat_synth += val; return;
+      case 'mat_exotic': this.mat_exotic += val; return;
+      case 'mat_crystal': this.mat_crystal += val; return;
+      case 'mat_bio': this.mat_bio += val; return;
+      case 'mat_waste': this.mat_waste += val; return;
+      case 'mat_biowaste': this.mat_biowaste += val; return;
+    }
+  }
+
+  public subProp(propName: string, val: number) {
+    switch (propName) {
+      case 'comp_structure': this.comp_structure -= val; return;
+      case 'comp_basic': this.comp_basic -= val; return;
+      case 'comp_inter': this.comp_inter -= val; return;
+      case 'comp_adv': this.comp_adv -= val; return;
+      case 'mat_basic': this.mat_basic -= val; return;
+      case 'mat_inter': this.mat_inter -= val; return;
+      case 'mat_adv': this.mat_adv -= val; return;
+      case 'mat_rare': this.mat_rare -= val; return;
+      case 'mat_synth': this.mat_synth -= val; return;
+      case 'mat_exotic': this.mat_exotic -= val; return;
+      case 'mat_crystal': this.mat_crystal -= val; return;
+      case 'mat_bio': this.mat_bio -= val; return;
+      case 'mat_waste': this.mat_waste -= val; return;
+      case 'mat_biowaste': this.mat_biowaste -= val; return;
+    }
+  }
 
   public totalUsed(): number {
     return Math.ceil( this.comp_structure )

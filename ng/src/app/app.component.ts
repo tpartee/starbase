@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { IBoardModule, ICursor, IModuleDefinition, ModuleLookup, TileLookup, TraversalLookup } from 'src/typedefs';
-import { GameValues } from 'src/gamevalues';
+import { IBoardModule, IConsumers, ICursor, IModuleDefinition, IProducers, ModuleLookup, TileLookup, TraversalLookup } from 'src/typedefs';
+import { GameValues, Stores } from 'src/gamevalues';
 import { ObjectUnsubscribedError } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   isMapLoaded: boolean = false;
   isFullyLoaded: boolean = false;
   isShowingGameboard: boolean = false;
-  cursor: ICursor = { left: 0, top: 0, isShown: false };
+  cursor: ICursor = { left: 0, top: 0, isShown: false, desW: 1, desH: 1 };
   moduleList: Array<IModuleDefinition> = [];          // Module Definition List (from modules.json)
   moduleLookup: ModuleLookup = {};                    // Fast look-up for ModuleDefinitions by name
   boardModules: Array<IBoardModule> = [];             // Modules on the game board, even if not built yet
@@ -68,15 +68,15 @@ export class AppComponent implements OnInit {
 
   LoadMap() {
     // Corridors (in a + shape)
-    this.addModule('passage_corridor',  0,  0, 0, 1, true);
-    this.addModule('passage_corridor',  0, -1, 0, 1, true);
-    this.addModule('passage_corridor',  0, -2, 0, 1, true);
-    this.addModule('passage_corridor',  0,  1, 0, 1, true);
-    this.addModule('passage_corridor',  0,  2, 0, 1, true);
-    this.addModule('passage_corridor', -1,  0, 0, 1, true);
-    this.addModule('passage_corridor', -2,  0, 0, 1, true);
-    this.addModule('passage_corridor',  1,  0, 0, 1, true);
-    this.addModule('passage_corridor',  2,  0, 0, 1, true);
+    this.addModule('passage_corridor',  0,  0, 0, 1, true, true);
+    this.addModule('passage_corridor',  0, -1, 0, 1, true, true);
+    this.addModule('passage_corridor',  0, -2, 0, 1, true, true);
+    this.addModule('passage_corridor',  0,  1, 0, 1, true, true);
+    this.addModule('passage_corridor',  0,  2, 0, 1, true, true);
+    this.addModule('passage_corridor', -1,  0, 0, 1, true, true);
+    this.addModule('passage_corridor', -2,  0, 0, 1, true, true);
+    this.addModule('passage_corridor',  1,  0, 0, 1, true, true);
+    this.addModule('passage_corridor',  2,  0, 0, 1, true, true);
     // Modules
     this.addModule('quarters_cramped_small',           2,  1, 0, 1, true, true);
     this.addModule('command_cramped',                  1, -1, 0, 1, true);
@@ -91,12 +91,12 @@ export class AppComponent implements OnInit {
     this.addModule('sensors_rudimentary',              2, -1, 0, 1, true, true);
     this.addModule('entertainment_mess_hall_cramped',  1, -2, 0, 1, true, true);
     // Weapons, Shields, Docks
-    this.addModule('dock_small',            3,  0, 0, 2, true);
-    this.addModule('dock_small',           -3,  0, 0, 4, true);
-    this.addModule('shield_emitter_small',  1, -3, 0, 1, true);
-    this.addModule('shield_emitter_small', -1,  3, 0, 3, true);
-    this.addModule('phasor_light',         -1, -3, 0, 1, true);
-    this.addModule('phasor_light',          1,  3, 0, 3, true);
+    this.addModule('dock_small',            3,  0, 0, 2, true, true);
+    this.addModule('dock_small',           -3,  0, 0, 4, true, true);
+    this.addModule('shield_emitter_small',  1, -3, 0, 1, true, true);
+    this.addModule('shield_emitter_small', -1,  3, 0, 3, true, true);
+    this.addModule('phasor_light',         -1, -3, 0, 1, true, true);
+    this.addModule('phasor_light',          1,  3, 0, 3, true, true);
 
     this.SetDisplayLevel();
 
@@ -187,6 +187,9 @@ export class AppComponent implements OnInit {
     console.log(event);
     if (![null,'delete','build'].includes(this.selectedTool) && event.code === 'KeyR') {
       this.currentRotation = (this.currentRotation > 3) ? 1 : this.currentRotation++;
+      const def = this.moduleLookup[this.selectedTool ?? ''];
+      this.cursor.desW = (def.width == def.height) ? def.width : (this.currentRotation % 2) ? def.width : def.height;
+      this.cursor.desH = (def.width == def.height) ? def.width : (this.currentRotation % 2) ? def.height : def.width;
     }
   }
 
@@ -199,7 +202,9 @@ export class AppComponent implements OnInit {
     const blockY = Math.floor(e.pageY / 32) + this.mapT;
     if (this.cursor.left != blockX || this.cursor.top != blockY) {
       // console.log("Cursor block changed to",blockX,",",blockY);
-      this.cursor = { left: blockX, top: blockY, isShown: (blockX<this.mapR && blockY<this.mapB) ? true : false };
+      this.cursor.left    = blockX
+      this.cursor.top     = blockY
+      this.cursor.isShown = blockX<this.mapR && blockY<this.mapB;
     }
   }
 
@@ -210,12 +215,19 @@ export class AppComponent implements OnInit {
   // Changes the currently selected tool which is triggered when user left-clicks
   changeTool(type: string | null) {
     this.generalError = null;
-    if ([null,''].includes(type)) this.selectedTool = null;
-    if ('build'  == type) { this.selectedTool = 'build';  return; }
-    if ('delete' == type) { this.selectedTool = 'delete'; return; }
-    if (Object.keys(this.moduleLookup).includes(type ?? '')) { this.selectedTool = type; return; }
-    this.selectedTool = null;
+    this.cursor.desW = 1;
+    this.cursor.desH = 1;
     this.currentRotation = 1;
+    if ([null,''].includes(type)) { this.selectedTool = null; }
+    else if ('build'  == type) { this.selectedTool = 'build'; }
+    else if ('delete' == type) { this.selectedTool = 'delete'; }
+    else if (Object.keys(this.moduleLookup).includes(type ?? '')) {
+      this.selectedTool = type;
+      this.cursor.desW = this.moduleLookup[type ?? ''].width;
+      this.cursor.desH = this.moduleLookup[type ?? ''].height;
+    } else {
+      this.selectedTool = null;
+    }
   }
 
   // The user clicked on the board, so take action based on which tool they've got selected right now
@@ -338,6 +350,8 @@ export class AppComponent implements OnInit {
       'left': left,
       'top': top,
       'level': level,
+      'desW': desW,
+      'desH': desH,
       'isBuilt': isBuilt,
       buildDaysLeft: (isBuilt) ? 0 : def.construction.days,
       'isActive': isActive,
@@ -478,10 +492,12 @@ export class AppComponent implements OnInit {
     if (Object.keys(this.tileLookupGlobal).includes(key)) {
       const mod = this.boardModules[this.tileLookupGlobal[key]];
       if (mod.isBuilt) { this.generalError = 'That module is already finished building!'; return false; }
+      if (this.buildQueue.includes(mod.id)) { this.generalError = 'That module is already in the build queue!'; return false; }
+      if (16 <= this.buildQueue.length) { this.generalError = 'The build queue is full!'; return false; }
       // Make sure this module is adjacent to another built module or a module in the queue to be built
       let match = false;
       mod.neighbors.forEach(nmod => { if (this.boardModules[nmod].isBuilt || this.buildQueue.includes(nmod)) match = true; });
-      if (!match) return false;
+      if (!match) { this.generalError = 'That module cannot be built until it has a neighbor that is built or is in the queue!'; return false; }
       // Add it to the queue!
       this.buildQueue.push(mod.id);
     }
@@ -660,8 +676,70 @@ export class AppComponent implements OnInit {
 
   advanceDay() {
     // Check for events
+
     // Consume then Produce
+    const store = this.gameValues.stores;
+    let tempStore: Stores = new Stores(store);
+    let conpro_changes: Stores = new Stores(null);
+    this.boardModules.forEach(mod => {
+      if (mod.isBuilt && mod.isActive) {
+        const def = this.moduleLookup[mod.type];
+        let supply = true;
+        tempStore.props.forEach((key: string) => { if (def.consumers[key as keyof IConsumers] && tempStore.getProp(key) < (def.consumers[key as keyof IConsumers] ?? 0)) supply = false; });
+        if (supply) {
+          tempStore.props.forEach( (key: string) => { tempStore.subProp(key, def.consumers[key as keyof IConsumers] ?? 0); tempStore.addProp(key, def.producers[key as keyof IProducers] ?? 0); } );
+        }
+      }
+    });
+    // Consume and produce inhabitant stuff
+    tempStore.comp_basic   -= this.gameValues.staff_total * 0.05;   // Water + Air in
+    tempStore.mat_waste    += this.gameValues.staff_total * 0.05;   // Urine + CO2 out
+    tempStore.mat_bio      -= this.gameValues.staff_total * 0.03;   // Food in
+    tempStore.mat_biowaste += this.gameValues.staff_total * 0.03;   // Poop out
+    console.log('Producer changes:',tempStore);
+    tempStore.props.forEach( (key: string) => { store.addProp(key, tempStore.getProp(key)); } );
+
     // Advance the Build Queue
+    if (this.buildQueue.length > 0) {
+      this.boardModules.forEach(mod => {   // First check for full-size airlock teams
+        if (mod.isBuilt && mod.isActive && 'airlock' == mod.type) {
+          const def = this.moduleLookup[mod.type];
+          const bq  = this.buildQueue;
+          let workVal = mod.assigned_engineer / (def.consumers.staff_engineer_max ?? 1);
+          while (workVal > 0 && bq.length > 0) {
+            const bMod = this.boardModules[bq[0]];
+            if (workVal >= bMod.buildDaysLeft) {   // Complete the building
+              workVal -= bMod.buildDaysLeft;
+              bMod.buildDaysLeft = 0;
+              bMod.isBuilt = true;
+              bq.shift();
+            } else {   // Add any remainder to the next item in the queue
+              bMod.buildDaysLeft -= workVal;
+              workVal = 0;
+            }
+          }
+        }
+      });
+      this.boardModules.forEach(mod => {   // Then check for tiny airlock teams
+        if (mod.isBuilt && mod.isActive && 'airlock_tiny' == mod.type) {
+          const def = this.moduleLookup[mod.type];
+          const bq  = this.buildQueue;
+          let workVal = mod.assigned_engineer / (def.consumers.staff_engineer_max ?? 1) * 0.5;
+          while (workVal > 0 && bq.length > 0) {
+            const bMod = this.boardModules[bq[0]];
+            if (workVal >= bMod.buildDaysLeft) {   // Complete the building
+              workVal -= bMod.buildDaysLeft;
+              bMod.buildDaysLeft = 0;
+              bMod.isBuilt = true;
+              bq.shift();
+            } else {   // Add any remainder to the next item in the queue
+              bMod.buildDaysLeft -= workVal;
+              workVal = 0;
+            }
+          }
+        }
+      });
+    }
   }
 
 }

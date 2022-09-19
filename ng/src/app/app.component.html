@@ -11,8 +11,15 @@
         <ng-container *ngFor="let module of displayModules">
           <img [src]="'/assets/img/'+ moduleLookup[module.type].image_urls[module.imgVariant] +'.png'" class="board_tile"
                title="{{ module.type +' @ '+ module.left +','+ module.top }}"
-               [ngStyle]="{ 'left': ((module.left - mapL) * 32)+'px', 'top': ((module.top - mapT) * 32)+'px' }"
+               [ngStyle]="{ 'left': ((module.left - mapL) * 32)+'px', 'top': ((module.top - mapT) * 32)+'px', 'width': module.desW * 32+'px', 'height': module.desH * 32+'px' }"
                [ngClass]="{ 'faded': !module.isBuilt, 'rotate90': 2 == module.rotation, 'rotate180': 3 == module.rotation, 'rotate270': 4 == module.rotation }">
+        </ng-container>
+      </div>
+
+      <div class="grid_build_queue_layer">
+        <ng-container *ngFor="let modId of buildQueue; let idx=index">
+          <img [src]="'/assets/img/queue'+ (idx+1) +'.png'" class="queue_tile"
+               [ngStyle]="{ 'left': ((boardModules[modId].left - mapL) * 32)+'px', 'top': ((boardModules[modId].top - mapT) * 32)+'px' }">
         </ng-container>
       </div>
 
@@ -20,8 +27,8 @@
       </div>
 
       <div class="grid_cursor_layer">
-        <div *ngIf="cursor.isShown" class="grid_cursor_outer" [ngStyle]="{ 'left': ((cursor.left - mapL) * 32 - 1)+'px', 'top': ((cursor.top - mapT) * 32 - 1)+'px' }">
-          <div class="grid_cursor_inner"></div>
+        <div *ngIf="cursor.isShown" class="grid_cursor_outer" [ngStyle]="{ 'left': ((cursor.left - mapL) * 32 - 1)+'px', 'top': ((cursor.top - mapT) * 32 - 1)+'px', 'width': cursor.desW * 32 + 2+'px', 'height': cursor.desH * 32 + 2+'px' }">
+          <div class="grid_cursor_inner" [ngStyle]="{ 'width': cursor.desW * 32+'px', 'height': cursor.desH * 32+'px' }"></div>
         </div>
       </div>
 
@@ -61,7 +68,7 @@
     <div class="right_bottom_menu">
       <div *ngIf="selectedModule > -1 && selectedModule < boardModules.length">
         <div>Module: {{ selectedModuleDef?.display }}</div>
-        <div>Status: {{ boardModules[selectedModule].isActive ? 'Enabled' : 'Disabled / Standby' }} <button (click)="toggleModuleActive(boardModules[selectedModule])">{{ boardModules[selectedModule].isActive ? 'Disable' : 'Enable' }}</button></div>
+        <div>Status: {{ boardModules[selectedModule].isBuilt ? (boardModules[selectedModule].isActive ? 'Enabled' : 'Disabled / Standby') : (buildQueue.includes(selectedModule) ? 'Queued' : 'Not Queued') }} <button *ngIf="boardModules[selectedModule].isBuilt" (click)="toggleModuleActive(boardModules[selectedModule])">{{ boardModules[selectedModule].isActive ? 'Disable' : 'Enable' }}</button></div>
         <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_engineer_min">Engineers <button (click)="remStaff(selectedModule, 'engineer')">-</button> {{ boardModules[selectedModule].assigned_engineer }} <button (click)="addStaff(selectedModule, 'engineer')">+</button></div>
         <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_security_min">Security  <button (click)="remStaff(selectedModule, 'security')">-</button> {{ boardModules[selectedModule].assigned_security }} <button (click)="addStaff(selectedModule, 'security')">+</button></div>
         <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_medic_min">   Medics    <button (click)="remStaff(selectedModule, 'medic')"   >-</button> {{ boardModules[selectedModule].assigned_medic    }} <button (click)="addStaff(selectedModule, 'medic')"   >+</button></div>
@@ -70,6 +77,7 @@
       </div>
       <div><button (click)="changeTool('')">Inspect</button><button (click)="changeTool('build')">Build</button><button (click)="changeTool('delete')">Delete</button></div>
       <div><button (click)="changeTool('passage_corridor')">Corridor</button><button (click)="changeTool('lift_basic')">Lift</button><button (click)="changeTool('lift_quad')">QuadLift</button></div>
+      <div><button (click)="changeTool('quarters_basic_small')">Small Quarters</button><button (click)="changeTool('quarters_basic_medium')">Medium Quarters</button><button (click)="changeTool('quarters_basic_large')">Large Quarters</button></div>
       <div><button (click)="advanceDay()">Next Day</button></div>
     </div>
 

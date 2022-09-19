@@ -6,6 +6,8 @@ export interface IBoardModule {
   left: number;
   top: number;
   level: number;
+  desW: number;
+  desH: number;
   isBuilt: boolean;
   buildDaysLeft: number;
   rotation: number;
@@ -135,5 +137,7 @@ export interface IProducers {
 export interface ICursor {
   left: number;
   top: number;
+  desW: number;
+  desH: number;
   isShown: boolean;
 }
