@@ -13,12 +13,12 @@ export interface IBoardModule {
   rotation: number;
   imgVariant: number;
   isActive: boolean;
+  isTourist: boolean;
   assigned_command: number;
   assigned_security: number;
   assigned_engineer: number;
   assigned_medic: number;
   assigned_worker: number;
-  traversalConnections: Array<number>;
   neighbors: Array<number>;
 }
 
@@ -42,6 +42,7 @@ export interface IModuleDefinition {
   passthrough: boolean;
   doorway: boolean;
   exterior: boolean;
+  solid: boolean;
   image_urls: Array<string>;
   connections: Array<string>;
   construction: IConstructions;

@@ -5,7 +5,7 @@
 
   <div class="board_viewport" (click)="boardClick()">
 
-    <div class="grid_container" [ngStyle]="{ 'width': (mapL * -1 + mapR) * 32 + 'px', 'height': (mapT * -1 + mapB) * 32 + 'px' }">
+    <div id="grid_container" class="grid_container" [ngStyle]="{ 'width': (mapL * -1 + mapR) * 32 + 'px', 'height': (mapT * -1 + mapB) * 32 + 'px', 'margin-left': boardOffsetX +'px', 'margin-top': boardOffsetY +'px' }">
 
       <div class="grid_layer">
         <ng-container *ngFor="let module of displayModules">
@@ -75,6 +75,7 @@
         <div *ngIf="boardModules[selectedModule].isActive && selectedModuleDef?.consumers?.staff_worker_min">  Workers   <button (click)="remStaff(selectedModule, 'worker')"  >-</button> {{ boardModules[selectedModule].assigned_worker   }} <button (click)="addStaff(selectedModule, 'worker')"  >+</button></div>
         <div *ngIf="selectedModuleError" style="color: #f33;">{{ selectedModuleError }}</div>
       </div>
+      <div>Tool: {{ (!selectedTool) ? 'Inspect' : selectedTool }} - Rotation: {{ currentRotation }}</div>
       <div><button (click)="changeTool('')">Inspect</button><button (click)="changeTool('build')">Build</button><button (click)="changeTool('delete')">Delete</button></div>
       <div><button (click)="changeTool('passage_corridor')">Corridor</button><button (click)="changeTool('lift_basic')">Lift</button><button (click)="changeTool('lift_quad')">QuadLift</button></div>
       <div><button (click)="changeTool('quarters_basic_small')">Small Quarters</button><button (click)="changeTool('quarters_basic_medium')">Medium Quarters</button><button (click)="changeTool('quarters_basic_large')">Large Quarters</button></div>
@@ -86,5 +87,69 @@
   </div>
 
   <!-- DIALOG LAYERS - Render interactive dialogs and pop-ups -->
+
+  <div *ngIf="isProcessingDay" class="working_dialog">
+    <h2>Working through day...</h2>
+  </div>
+
+  <div *ngIf="['ship_trade_small'].includes(currentEvent ?? '')" class="confirm_dialog">
+    <h2>Docking Request: Trade</h2>
+    <div class="centered">
+      <button (click)="acceptTradeShip()">Approve Docking</button> &nbsp; &nbsp;
+      <button (click)="rejectTradeShip()">Decline Docking</button>
+    </div>
+  </div>
+
+  <div *ngIf="'trade_console' === currentEvent" class="barter_panel">
+    <h2>Trade Console</h2>
+    <table style="width: 100%;">
+      <thead>
+        <th>Commodity</th>
+        <th>Price</th>
+        <th>Theirs</th>
+        <th>Sell</th>
+        <th>Diff</th>
+        <th>Buy</th>
+        <th>Yours</th>
+        <th>Price</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prop of tradeValues?.ours?.props">
+          <td>{{ prop }}</td>
+          <td class="centered">{{ tradeValues?.their_buy_price?.[prop] }}</td>
+          <td class="centered">{{ tradeValues?.theirs?.[prop] }}</td>
+          <td class="centered"><button (click)="sellMany(prop)">&lt;&lt;</button> <button (click)="sellOne(prop)">&lt;</button></td>
+          <td class="centered">{{ tradeValues?.diff?.[prop] }}</td>
+          <td class="centered"><button (click)="buyOne(prop)">&gt;</button><button (click)="buyMany(prop)">&gt;&gt;</button></td>
+          <td class="centered">{{ tradeValues?.ours?.[prop] }}</td>
+          <td class="centered">{{ tradeValues?.their_sell_price?.[prop] }}</td>
+        </tr>
+        <tr>
+          <td>Trade Creds</td>
+          <td>&nbsp;</td>
+          <td class="centered">{{ tradeValues?.their_trade_creds }}</td>
+          <td>&nbsp;</td>
+          <td class="centered">{{ tradeValues?.diff_trade_creds }}</td>
+          <td>&nbsp;</td>
+          <td class="centered">{{ tradeValues?.our_trade_creds }}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Storage Avail</td>
+          <td>&nbsp;</td>
+          <td class="centered">{{ tradeValues?.their_storage }}</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="centered">{{ tradeValues?.our_storage }}</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="centered m-t-lg">
+      <button (click)="completeTrade()">Complete Trade</button> &nbsp; &nbsp;
+      <button (click)="cancelTrade()">Cancel Trade</button>
+    </div>
+  </div>
 
 </div>
